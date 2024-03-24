@@ -7,7 +7,7 @@ This repo was created to learn about associative arrays and implement a working 
 Some of the key learnings from this exercise was the use of double pointers, dynamic resizing to ensure efficent processing, and double hashing functions.
 
 
-#### POINTERS
+#### Pointers
 
 A pointer in C is a variable that stores the memory address of another variable.
 
@@ -15,7 +15,7 @@ Ex:
     If you have `int x = 10;` a pointer to `x` would store the address of `x` in memory,
     allowing you to access and manipulate `x` through the pointer.
 
-#### DOUBLE POINTERS
+#### Double Pointers
 A Pointer to a Pointer adds another level of indirection. This means the first pointer
 points to another pointer that then points to the actual data. This concept is often
 used for dynamic multidimensional arrays, among other things.
@@ -29,3 +29,15 @@ Using an array of pointers rather then an array of structures directory has seve
 
 * __Indirection Benefits:__ With pointers, you can have elements scattered in memory, which might be beneficial for certain memory management strategies. It also allows for elements to be shared or moved easily without copying data.
 
+---
+
+## Double Hashing
+
+Double hashing is a technique used to resolve collisions in hash tables, particularly within the context of open addressing schemes.
+
+#### How double hashing works:
+1. Initial Hash: when an element is inserted, a hash function (`hash1`) computes an initial index based on the element's key.
+
+2. Collision: If the calculated index is already occupied by a different element (a collision occurs), a second hash function (`hash2`) is used to calculate the step size for probing.
+
+3. Probing: The hash table is then probed at intervals determined by the second hash function (`hash2`). Specifically, the i-th probe position is calculated as `(hash1(key) + i * hash2(key)) % table_size`, where `i` ranges from 1 onwards until an empty slot is found or the table is deemed full.
