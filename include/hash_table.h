@@ -7,6 +7,7 @@
 #define HT_INITIAL_BASE_SIZE 25
 #define HT_PRIME_1 151
 #define HT_PRIME_2 163
+#define DEBUG 0
 
 // Hash table item
 typedef struct ht_item

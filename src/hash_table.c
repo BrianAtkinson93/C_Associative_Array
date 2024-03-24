@@ -4,7 +4,6 @@
 #include <math.h>
 #include "../include/hash_table.h"
 
-// This function is resonsible
 static ht_item *ht_new_item(const char *k, const char *v)
 {
     ht_item *i = malloc(sizeof(ht_item));
@@ -32,16 +31,20 @@ ht_hash_table *ht_new()
 
 static void ht_del_item(ht_item *i)
 {
-    if (i == &HT_DELETED_ITEM) return;
-    free(i->key);
-    free(i->value);
-    free(i);
+    if (i == &HT_DELETED_ITEM)
+        return; // Check if {NULL, NULL} so we don't try to free unallocated pointer
+    free(i->key); // free key
+    free(i->value); // free value
+    free(i); // free structure
 }
 
 void ht_del_hash_table(ht_hash_table *ht)
 {
-    printf("ht->size = %d\n", ht->size);
-    for (int i = 0; i < ht->size; i++)
+    if (DEBUG == 1)
+    {
+        printf("ht->size = %d\n", ht->size);
+    }
+    for (int i = 0; i < ht->size; i++) // For each item in table, free item
     {
         ht_item *item = ht->items[i];
         if (item != NULL)
@@ -49,8 +52,8 @@ void ht_del_hash_table(ht_hash_table *ht)
             ht_del_item(item);
         }
     }
-    free(ht->items);
-    free(ht);
+    free(ht->items); // free pointer array
+    free(ht);        // free structure
 }
 
 static int ht_hash(const char *s, const int a, const int m)
