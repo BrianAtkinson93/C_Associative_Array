@@ -32,10 +32,10 @@ ht_hash_table *ht_new()
 static void ht_del_item(ht_item *i)
 {
     if (i == &HT_DELETED_ITEM)
-        return; // Check if {NULL, NULL} so we don't try to free unallocated pointer
-    free(i->key); // free key
+        return;     // Check if {NULL, NULL} so we don't try to free unallocated pointer
+    free(i->key);   // free key
     free(i->value); // free value
-    free(i); // free structure
+    free(i);        // free structure
 }
 
 void ht_del_hash_table(ht_hash_table *ht)
@@ -193,6 +193,10 @@ void ht_resize_up(ht_hash_table *ht)
     ht_resize(ht, new_size);
 }
 
+/// @brief Reduces the size of the hash_table by half. Intended on being called when the load factor
+///         drops below a threshold, in this case, it has been set to 20% - which was set in `ht_search()`.
+///         Reducing the size can improve space efficiency.
+/// @param ht Pointer to the hash_table instance, which will be reduced in size.
 void ht_resize_down(ht_hash_table *ht)
 {
     const int new_size = ht->base_size / 2;
