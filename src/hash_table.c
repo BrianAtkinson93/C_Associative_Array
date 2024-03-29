@@ -187,6 +187,9 @@ static void ht_resize(ht_hash_table *ht, const int base_size)
     ht_del_hash_table(new_ht);
 }
 
+/// @brief Increases the size of the hash_table by doubling. Intended on being called when the load factor
+///         increases above a threshold, in this case, it has been set to 70% - which was set in `ht_insert()`.
+/// @param ht Pointer to the hash_table instance, which will be reduced in size.
 void ht_resize_up(ht_hash_table *ht)
 {
     const int new_size = ht->base_size * 2;
