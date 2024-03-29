@@ -156,12 +156,19 @@ void ht_delete(ht_hash_table *ht, const char *key)
     ht->count--;
 }
 
+/// @brief The subsequent functions called from ht_resize_up & ht_resize_down functions. Creates new hash_table according to the
+///         size provided, and then re-inserts all the items into the new hash_table.
+/// @param ht Pointer to hash_table instance to be resized.
+/// @param base_size The new size to resize the hash_table to.
 static void ht_resize(ht_hash_table *ht, const int base_size)
 {
+    // This check prevents resizing the hash_table to a smaller size then the default // smallest allowable size.
     if (base_size < HT_INITIAL_BASE_SIZE)
     {
         return;
     }
+
+    // Creates a new hash_table, given the provided size, and inserts the existing items into the new table.
     ht_hash_table *new_ht = ht_new_size(base_size);
     for (int i = 0; i < ht->size; i++)
     {
@@ -172,10 +179,13 @@ static void ht_resize(ht_hash_table *ht, const int base_size)
         }
     }
 
+    // Swaps the values from the old_talbe to the new_table, effectively resizing the table.
     ht->base_size = new_ht->base_size;
     ht->count = new_ht->count;
 
-    // To delete new_ht, we give it ht's size and items
+    // Swaps the pointers of the new_table and old_table, completing the re_suze_* of the table. 
+    // By swapping pointers, the original table can be considered done, and the new_table, which holds the old pointers
+    // is finalized and prepared for delete.
     const int temp_size = ht->size;
     ht->size = new_ht->size;
     new_ht->size = temp_size;
@@ -184,6 +194,7 @@ static void ht_resize(ht_hash_table *ht, const int base_size)
     ht->items = new_ht->items;
     new_ht->items = temp_items;
 
+    // Deletes the new_table and the pointers assigned to it which are the old_tables values.
     ht_del_hash_table(new_ht);
 }
 
